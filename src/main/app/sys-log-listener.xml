@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:context="http://www.springframework.org/schema/context" xmlns:udp="http://www.mulesoft.org/schema/mule/udp" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/udp http://www.mulesoft.org/schema/mule/udp/current/mule-udp.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <udp:connector name="UDP" validateConnections="true" doc:name="UDP"/>
+    <context:property-placeholder location="config.properties"/>
+    <flow name="sys-log-listenerFlow">
+        <udp:inbound-endpoint exchange-pattern="request-response" host="${udp.host}" port="${udp.port}" responseTimeout="10000" doc:name="UDP" connector-ref="UDP"/>
+        <object-to-string-transformer doc:name="Object to String"/>
+        <logger message="Payload is #[payload]" level="INFO" doc:name="Logger"/>
+    </flow>
+</mule>
